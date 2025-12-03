@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>心灵测试屋 - 专业心理测试平台</title>
+    <!-- 微信分享元数据 -->
+    <meta property="og:title" content="心灵测试屋 - 专业心理测试平台">
+    <meta property="og:description" content="探索真实的自己，专业心理测试平台">
+    <meta property="og:image" content="https://picsum.photos/id/64/400/300">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/v4-shims.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF69B4',
+                        secondary: '#FFB6C1',
+                        accent: '#FF1493',
+                        light: '#FFF0F5',
+                        dark: '#8B4513'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 100%);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl;
+            }
+            .btn-secondary {
+                @apply bg-white hover:bg-gray-50 text-primary border border-primary font-medium py-3 px-6 rounded-lg transition-all;
+            }
+            .test-card {
+                @apply bg-white rounded-xl shadow-md p-5 card-hover border-l-4 border-primary;
+            }
+            .question-card {
+                @apply bg-white rounded-xl shadow-md p-5 mb-5;
+            }
+            .option-btn {
+                @apply w-full text-left p-4 border border-gray-200 rounded-lg mb-3 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer;
+            }
+            .option-btn.selected {
+                @apply border-primary bg-primary/10;
+            }
+            .wechat-share-btn {
+                @apply bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-all flex items-center justify-center;
+            }
+        }
+    </style>
+    <!-- 微信JS-SDK -->
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+</head>
+<body class="font-inter bg-gray-50 text-gray-800 overflow-x-hidden">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-md fixed w-full z-10 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-14">
+                <div class="flex items-center">
+                    <i class="fas fa-heart text-primary text-xl mr-2"></i>
+                    <span class="text-lg font-bold text-gray-800">心灵测试屋</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-primary transition-colors" onclick="showWechatMenu()">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 微信菜单 (默认隐藏) -->
+    <div id="wechat-menu" class="fixed top-14 left-0 w-full bg-white shadow-lg z-20 transform -translate-y-full transition-transform duration-300">
+        <div class="px-4 py-3">
+            <div class="flex justify-end mb-3">
+                <button onclick="hideWechatMenu()" class="text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="#home" class="text-center py-2 text-gray-600 hover:text-primary transition-colors" onclick="hideWechatMenu()">
+                    <i class="fas fa-home block text-lg mb-1"></i>
+                    <span class="text-sm">首页</span>
+                </a>
+                <a href="#tests" class="text-center py-2 text-gray-600 hover:text-primary transition-colors" onclick="hideWechatMenu()">
+                    <i class="fas fa-list block text-lg mb-1"></i>
+                    <span class="text-sm">测试分类</span>
+                </a>
+                <a href="#about" class="text-center py-2 text-gray-600 hover:text-primary transition-colors" onclick="hideWechatMenu()">
+                    <i class="fas fa-info-circle block text-lg mb-1"></i>
+                    <span class="text-sm">关于我们</span>
+                </a>
+                <a href="#contact" class="text-center py-2 text-gray-600 hover:text-primary transition-colors" onclick="hideWechatMenu()">
+                    <i class="fas fa-envelope block text-lg mb-1"></i>
+                    <span class="text-sm">联系我们</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="pt-20 pb-12 gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    探索<span class="text-primary">真实的自己</span>
+                </h1>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+                    专业的心理测试平台，帮助您了解自己的性格、情感和心理状态
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-3">
+                    <a href="#tests" class="btn-primary">
+                        开始测试
+                    </a>
+                    <a href="#about" class="btn-secondary">
+                        了解更多
+                    </a>
+                </div>
+                
+                <!-- 微信提示 -->
+                <div class="mt-8 bg-white rounded-lg shadow-sm p-3 max-w-md mx-auto">
+                    <div class="flex items-center text-sm text-gray-600">
+                        <i class="fab fa-weixin text-green-500 mr-2"></i>
+                        <span>推荐使用微信浏览器打开，体验更佳</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 测试分类 -->
+    <section id="tests" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">专业心理测试</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    选择适合您的测试，探索内心世界
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- MBTI测试 -->
+                <div class="test-card" onclick="startTest('mbti')">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-user text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">MBTI人格测试</h3>
+                    </div>
+                    <p class="text-gray-600 text-xs mb-3">
+                        了解您的16型人格类型，探索职业发展和人际关系
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">15题 · 5分钟</span>
+                        <button class="text-primary hover:text-accent transition-colors text-xs font-medium">
+                            开始测试 <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 情感关系测试 -->
+                <div class="test-card" onclick="startTest('relationship')">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-heart text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">情感关系测试</h3>
+                    </div>
+                    <p class="text-gray-600 text-xs mb-3">
+                        评估您的爱情观和相处模式，改善人际关系
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">15题 · 6分钟</span>
+                        <button class="text-primary hover:text-accent transition-colors text-xs font-medium">
+                            开始测试 <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 心理健康测试 -->
+                <div class="test-card" onclick="startTest('mental-health')">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-brain text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">心理健康测试</h3>
+                    </div>
+                    <p class="text-gray-600 text-xs mb-3">
+                        评估您的心理状态，提供自我调节建议
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">15题 · 4分钟</span>
+                        <button class="text-primary hover:text-accent transition-colors text-xs font-medium">
+                            开始测试 <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 职业倾向测试 -->
+                <div class="test-card" onclick="startTest('career')">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-briefcase text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">职业倾向测试</h3>
+                    </div>
+                    <p class="text-gray-600 text-xs mb-3">
+                        发现您的职业兴趣和优势，规划职业发展
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">15题 · 5分钟</span>
+                        <button class="text-primary hover:text-accent transition-colors text-xs font-medium">
+                            开始测试 <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 性格色彩测试 -->
+                <div class="test-card" onclick="startTest('color')">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-palette text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">性格色彩测试</h3>
+                    </div>
+                    <p class="text-gray-600 text-xs mb-3">
+                        通过色彩了解您的性格特点，简单直观
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">15题 · 4分钟</span>
+                        <button class="text-primary hover:text-accent transition-colors text-xs font-medium">
+                            开始测试 <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 亲子关系测试 -->
+                <div class="test-card" onclick="startTest('parent-child')">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-child text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">亲子关系测试</h3>
+                    </div>
+                    <p class="text-gray-600 text-xs mb-3">
+                        评估您的亲子沟通模式，改善家庭关系
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">15题 · 5分钟</span>
+                        <button class="text-primary hover:text-accent transition-colors text-xs font-medium">
+                            开始测试 <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 测试页面 (默认隐藏) -->
+    <section id="test-page" class="py-12 bg-gray-50 hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2" id="test-title">MBTI人格测试</h2>
+                <p class="text-gray-600 text-sm" id="test-description">了解您的16型人格类型，探索职业发展和人际关系</p>
+            </div>
+            
+            <!-- 进度条 -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-medium" id="progress-text">第 1 题 / 共 15 题</span>
+                    <span class="text-xs text-gray-500" id="time-estimate">预计剩余时间: 5分钟</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-primary h-2 rounded-full transition-all duration-500" id="progress-bar" style="width: 6.67%"></div>
+                </div>
+            </div>
+            
+            <!-- 题目区域 -->
+            <div id="question-container">
+                <!-- 题目将通过JavaScript动态生成 -->
+            </div>
+            
+            <!-- 导航按钮 -->
+            <div class="flex justify-between mt-6">
+                <button id="prev-btn" class="btn-secondary hidden" onclick="prevQuestion()">
+                    <i class="fas fa-arrow-left mr-2"></i> 上一题
+                </button>
+                <button id="next-btn" class="btn-primary" onclick="nextQuestion()">
+                    下一题 <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="submit-btn" class="btn-primary hidden" onclick="submitTest()">
+                    提交测试 <i class="fas fa-check ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 结果页面 (默认隐藏) -->
+    <section id="result-page" class="py-12 bg-white hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">测试结果</h2>
+                <p class="text-gray-600 text-sm" id="result-test-name">MBTI人格测试</p>
+            </div>
+            
+            <!-- 结果卡片 -->
+            <div class="bg-light rounded-xl shadow-lg p-6 mb-6">
+                <div class="text-center mb-5">
+                    <div id="result-icon" class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-user text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2" id="result-title">INFP 治愈者型</h3>
+                    <p class="text-primary font-medium text-sm" id="result-subtitle">理想主义者 · 富有创造力</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <h4 class="font-semibold text-sm mb-2">性格特点：</h4>
+                        <ul class="space-y-1 text-xs text-gray-600" id="personality-traits">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>理想主义者，重视个人价值观</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>富有创造力和想象力</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>善于理解他人的情感</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>追求内心的和谐与真实</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-sm mb-2">适合职业：</h4>
+                        <ul class="space-y-1 text-xs text-gray-600" id="suitable-jobs">
+                            <li class="flex items-start">
+                                <i class="fas fa-briefcase text-primary mt-1 mr-2"></i>
+                                <span>心理咨询师</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-briefcase text-primary mt-1 mr-2"></i>
+                                <span>作家/诗人</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-briefcase text-primary mt-1 mr-2"></i>
+                                <span>艺术家</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-briefcase text-primary mt-1 mr-2"></i>
+                                <span>教育工作者</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-sm mb-2">人际关系建议：</h4>
+                    <ul class="space-y-1 text-xs text-gray-600" id="relationship-advice">
+                        <li class="flex items-start">
+                            <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                            <span>学会表达自己的需求</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                            <span>设定健康的边界</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                            <span>接受自己和他人的不完美</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                            <span>寻找志同道合的朋友</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 微信分享按钮 -->
+            <div class="bg-green-50 rounded-lg p-4 mb-6">
+                <div class="text-center">
+                    <h4 class="font-semibold text-green-800 mb-3">分享给好友</h4>
+                    <div class="flex justify-center space-x-4">
+                        <button class="wechat-share-btn" onclick="shareToWechatFriend()">
+                            <i class="fas fa-user-friends mr-2"></i>
+                            <span>微信好友</span>
+                        </button>
+                        <button class="wechat-share-btn" onclick="shareToWechatMoment()">
+                            <i class="fas fa-share-alt mr-2"></i>
+                            <span>朋友圈</span>
+                        </button>
+                    </div>
+                    <p class="text-xs text-green-700 mt-3">
+                        分享您的测试结果，邀请朋友一起探索自我
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 行动按钮 -->
+            <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <button class="btn-secondary" onclick="backToTests()">
+                    <i class="fas fa-arrow-left mr-2"></i> 查看更多测试
+                </button>
+                <button class="btn-secondary" onclick="retakeTest()">
+                    <i class="fas fa-redo mr-2"></i> 重新测试
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about" class="py-12 gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">关于心灵测试屋</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    我们致力于为您提供专业、科学的心理测试服务
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-5">
+                <div class="bg-white rounded-xl shadow-md p-5 text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-heart text-primary"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">专业可靠</h3>
+                    <p class="text-gray-600 text-xs">
+                        所有测试均基于心理学理论，由专业心理学家设计和验证
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-5 text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-lock text-primary"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">隐私保护</h3>
+                    <p class="text-gray-600 text-xs">
+                        严格保护您的个人信息和测试结果，不会向第三方泄露
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-5 text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-smile text-primary"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">用户友好</h3>
+                    <p class="text-gray-600 text-xs">
+                        简洁易用的界面设计，适合所有年龄段的用户使用
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-3 text-center">我们的使命</h3>
+                <p class="text-gray-600 text-center max-w-2xl mx-auto text-sm">
+                    心灵测试屋致力于通过科学、专业的心理测试，帮助每个人更好地了解自己，
+                    改善人际关系，提升生活质量。我们相信，自我认知是个人成长和幸福的基础。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">联系我们</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    如有任何问题或建议，欢迎联系我们
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-5">
+                <div class="bg-light rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-5">联系方式</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mr-3 mt-0.5">
+                                <i class="fas fa-envelope text-primary text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-sm mb-1">邮箱</h4>
+                                <p class="text-gray-600 text-xs">contact@xinlingceshi.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mr-3 mt-0.5">
+                                <i class="fas fa-phone text-primary text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-sm mb-1">电话</h4>
+                                <p class="text-gray-600 text-xs">400-123-4567</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center mr-3 mt-0.5">
+                                <i class="fas fa-clock text-primary text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-sm mb-1">工作时间</h4>
+                                <p class="text-gray-600 text-xs">周一至周日 9:00-22:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-light rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-5">留言反馈</h3>
+                    <form class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium mb-1">姓名</label>
+                            <input type="text" class="w-full p-2 border border-gray-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-medium mb-1">邮箱</label>
+                            <input type="email" class="w-full p-2 border border-gray-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-medium mb-1">留言内容</label>
+                            <textarea rows="3" class="w-full p-2 border border-gray-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-full">
+                            提交留言
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 微信底部提示 -->
+    <div class="fixed bottom-0 left-0 w-full bg-white shadow-lg py-2 px-4 z-10">
+        <div class="flex items-center justify-center text-xs text-gray-600">
+            <i class="fab fa-weixin text-green-500 mr-2"></i>
+            <span>请在微信中打开以获得最佳体验</span>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 测试数据
+        const tests = {
+            'mbti': {
+                title: 'MBTI人格测试',
+                description: '了解您的16型人格类型，探索职业发展和人际关系',
+                questions: [
+                    {
+                        question: '当您参加社交活动时，您更倾向于：',
+                        options: [
+                            'A. 主动与陌生人交流，认识新朋友',
+                            'B. 与熟悉的人聊天，保持舒适圈'
+                        ],
+                        dimension: 'EI'
+                    },
+                    {
+                        question: '做决策时，您更依赖：',
+                        options: [
+                            'A. 逻辑分析和客观事实',
+                            'B. 个人价值观和情感因素'
+                        ],
+                        dimension: 'TF'
+                    },
+                    {
+                        question: '您更偏好哪种生活方式：',
+                        options: [
+                            'A. 有计划、有组织的生活',
+                            'B. 灵活、即兴的生活'
+                        ],
+                        dimension: 'JP'
+                    },
+                    {
+                        question: '您获取信息的方式更倾向于：',
+                        options: [
+                            'A. 通过实际经验和具体事实',
+                            'B. 通过想象和抽象概念'
+                        ],
+                        dimension: 'SN'
+                    },
+                    {
+                        question: '您的能量来源更倾向于：',
+                        options: [
+                            'A. 与他人相处时获得能量',
+                            'B. 独自思考时获得能量'
+                        ],
+                        dimension: 'EI'
+                    },
+                    {
+                        question: '您处理事情的方式更倾向于：',
+                        options: [
+                            'A. 快速做出决定并行动',
+                            'B. 仔细考虑各种可能性'
+                        ],
+                        dimension: 'JP'
+                    },
+                    {
+                        question: '您更注重：',
+                        options: [
+                            'A. 事情的结果和效率',
+                            'B. 过程的体验和感受'
+                        ],
+                        dimension: 'TF'
+                    },
+                    {
+                        question: '您的时间管理方式更倾向于：',
+                        options: [
+                            'A. 制定详细计划并严格执行',
+                            'B. 灵活安排，随机应变'
+                        ],
+                        dimension: 'JP'
+                    },
+                    {
+                        question: '您在团队中更倾向于：',
+                        options: [
+                            'A. 表达自己的观点和想法',
+                            'B. 倾听他人的意见和建议'
+                        ],
+                        dimension: 'EI'
+                    },
+                    {
+                        question: '您面对新环境时更倾向于：',
+                        options: [
+                            'A. 快速适应并融入',
+                            'B. 观察了解后再行动'
+                        ],
+                        dimension: 'JP'
+                    },
+                    {
+                        question: '您解决问题的方式更倾向于：',
+                        options: [
+                            'A. 分析问题的本质和原因',
+                            'B. 考虑问题的影响和后果'
+                        ],
+                        dimension: 'SN'
+                    },
+                    {
+                        question: '您的沟通方式更倾向于：',
+                        options: [
+                            'A. 直接表达自己的想法',
+                            'B. 考虑对方的感受和反应'
+                        ],
+                        dimension: 'TF'
+                    },
+                    {
+                        question: '您的兴趣爱好更倾向于：',
+                        options: [
+                            'A. 尝试新的事物和体验',
+                            'B. 深入研究自己感兴趣的领域'
+                        ],
+                        dimension: 'SN'
+                    },
+                    {
+                        question: '您处理压力的方式更倾向于：',
+                        options: [
+                            'A. 寻求他人的支持和帮助',
+                            'B. 独自思考和解决问题'
+                        ],
+                        dimension: 'EI'
+                    },
+                    {
+                        question: '您对未来的规划更倾向于：',
+                        options: [
+                            'A. 制定明确的目标和计划',
+                            'B. 保持开放和灵活的态度'
+                        ],
+                        dimension: 'JP'
+                    }
+                ],
+                results: {
+                    'ISTJ': {
+                        title: 'ISTJ 检查员型',
+                        subtitle: '实际、务实、有序',
+                        icon: 'fas fa-check-circle',
+                        traits: [
+                            '实际、务实、有序',
+                            '重视传统和规则',
+                            '责任感强，值得信赖',
+                            '注重细节和准确性'
+                        ],
+                        jobs: [
+                            '会计师',
+                            '审计师',
+                            '警察',
+                            '图书管理员'
+                        ],
+                        advice: [
+                            '学会灵活变通',
+                            '尝试接受新的想法',
+                            '表达自己的感受',
+                            '给自己一些放松的时间'
+                        ]
+                    },
+                    'INFP': {
+                        title: 'INFP 治愈者型',
+                        subtitle: '理想主义者 · 富有创造力',
+                        icon: 'fas fa-heart',
+                        traits: [
+                            '理想主义者，重视个人价值观',
+                            '富有创造力和想象力',
+                            '善于理解他人的情感',
+                            '追求内心的和谐与真实'
+                        ],
+                        jobs: [
+                            '心理咨询师',
+                            '作家/诗人',
+                            '艺术家',
+                            '教育工作者'
+                        ],
+                        advice: [
+                            '学会表达自己的需求',
+                            '设定健康的边界',
+                            '接受自己和他人的不完美',
+                            '寻找志同道合的朋友'
+                        ]
+                    },
+                    'ENFJ': {
+                        title: 'ENFJ 教育家型',
+                        subtitle: '热情、有说服力、负责任',
+                        icon: 'fas fa-chalkboard-teacher',
+                        traits: [
+                            '热情、有说服力、负责任',
+                            '善于理解他人的需求',
+                            '天生的领导者和教育家',
+                            '重视人际关系和和谐'
+                        ],
+                        jobs: [
+                            '教师',
+                            '心理咨询师',
+                            '人力资源经理',
+                            '公关专家'
+                        ],
+                        advice: [
+                            '学会说"不"',
+                            '关注自己的需求',
+                            '不要过于理想化',
+                            '给自己一些独处的时间'
+                        ]
+                    },
+                    'ENTP': {
+                        title: 'ENTP 辩论家型',
+                        subtitle: '聪明、好奇、创新',
+                        icon: 'fas fa-lightbulb',
+                        traits: [
+                            '聪明、好奇、创新',
+                            '善于发现问题和解决问题',
+                            '富有辩论精神和幽默感',
+                            '喜欢挑战和变化'
+                        ],
+                        jobs: [
+                            '律师',
+                            '企业家',
+                            '发明家',
+                            '市场营销专家'
+                        ],
+                        advice: [
+                            '学会完成已经开始的项目',
+                            '考虑他人的感受',
+                            '不要过于冲动',
+                            '专注于重要的事情'
+                        ]
+                    }
+                }
+            },
+            'relationship': {
+                title: '情感关系测试',
+                description: '评估您的爱情观和相处模式，改善人际关系',
+                questions: [
+                    {
+                        question: '在恋爱关系中，您更看重：',
+                        options: [
+                            'A. 安全感和稳定性',
+                            'B. 激情和浪漫'
+                        ],
+                        dimension: 'security'
+                    },
+                    {
+                        question: '当与伴侣发生争执时，您通常会：',
+                        options: [
+                            'A. 冷静沟通，寻找解决方案',
+                            'B. 先冷静下来，再处理问题'
+                        ],
+                        dimension: 'conflict'
+                    },
+                    {
+                        question: '您认为理想的相处模式是：',
+                        options: [
+                            'A. 相互依赖，共同成长',
+                            'B. 保持独立，相互尊重'
+                        ],
+                        dimension: 'dependence'
+                    },
+                    {
+                        question: '您表达爱意的方式更倾向于：',
+                        options: [
+                            'A. 言语表达和情感交流',
+                            'B. 实际行动和关心'
+                        ],
+                        dimension: 'expression'
+                    },
+                    {
+                        question: '在选择伴侣时，您更看重：',
+                        options: [
+                            'A. 性格和价值观的匹配',
+                            'B. 外貌和吸引力'
+                        ],
+                        dimension: 'selection'
+                    },
+                    {
+                        question: '您如何处理伴侣的缺点：',
+                        options: [
+                            'A. 接受并帮助改进',
+                            'B. 希望对方改变'
+                        ],
+                        dimension: 'acceptance'
+                    },
+                    {
+                        question: '您对亲密关系的期望是：',
+                        options: [
+                            'A. 平淡而真实的陪伴',
+                            'B. 充满惊喜和激情'
+                        ],
+                        dimension: 'expectation'
+                    },
+                    {
+                        question: '当伴侣需要支持时，您会：',
+                        options: [
+                            'A. 主动提供帮助和建议',
+                            'B. 倾听并给予情感支持'
+                        ],
+                        dimension: 'support'
+                    },
+                    {
+                        question: '您如何处理与伴侣的差异：',
+                        options: [
+                            'A. 寻找共同点，尊重差异',
+                            'B. 希望对方适应自己'
+                        ],
+                        dimension: 'difference'
+                    },
+                    {
+                        question: '您对爱情的看法是：',
+                        options: [
+                            'A. 爱情需要经营和维护',
+                            'B. 爱情应该是自然而然的'
+                        ],
+                        dimension: 'view'
+                    },
+                    {
+                        question: '您如何表达对伴侣的不满：',
+                        options: [
+                            'A. 直接沟通，表达感受',
+                            'B. 暗示或希望对方察觉'
+                        ],
+                        dimension: 'complaint'
+                    },
+                    {
+                        question: '您认为信任在关系中的重要性：',
+                        options: [
+                            'A. 非常重要，是基础',
+                            'B. 重要，但可以重建'
+                        ],
+                        dimension: 'trust'
+                    },
+                    {
+                        question: '您如何处理与伴侣的个人空间：',
+                        options: [
+                            'A. 尊重彼此的个人空间',
+                            'B. 希望时刻在一起'
+                        ],
+                        dimension: 'space'
+                    },
+                    {
+                        question: '您对未来关系的规划是：',
+                        options: [
+                            'A. 有明确的计划和目标',
+                            'B. 顺其自然，享受当下'
+                        ],
+                        dimension: 'planning'
+                    },
+                    {
+                        question: '您认为关系中的平等是指：',
+                        options: [
+                            'A. 权利和责任的平等',
+                            'B. 付出和收获的平等'
+                        ],
+                        dimension: 'equality'
+                    }
+                ],
+                results: {
+                    'secure': {
+                        title: '安全型伴侣',
+                        subtitle: '稳定、可靠、信任',
+                        icon: 'fas fa-shield-alt',
+                        traits: [
+                            '重视安全感和稳定性',
+                            '信任伴侣，善于沟通',
+                            '有责任感，值得信赖',
+                            '善于处理冲突和差异'
+                        ],
+                        jobs: [
+                            '适合与各种类型的人建立关系',
+                            '特别适合与安全型或焦虑型伴侣',
+                            '在长期关系中表现出色',
+                            '能够给伴侣带来安全感'
+                        ],
+                        advice: [
+                            '保持开放的心态，接受新的体验',
+                            '不要过于保守，尝试一些变化',
+                            '表达自己的情感需求',
+                            '给伴侣一些惊喜和浪漫'
+                        ]
+                    },
+                    'romantic': {
+                        title: '浪漫型伴侣',
+                        subtitle: '热情、浪漫、理想化',
+                        icon: 'fas fa-heart',
+                        traits: [
+                            '重视激情和浪漫',
+                            '善于表达爱意和情感',
+                            '理想化爱情，充满憧憬',
+                            '对关系有很高的期望'
+                        ],
+                        jobs: [
+                            '适合与浪漫型或安全型伴侣',
+                            '在恋爱初期表现出色',
+                            '能够给关系带来激情',
+                            '善于创造浪漫的氛围'
+                        ],
+                        advice: [
+                            '学会接受现实，不要过于理想化',
+                            '重视关系中的实际问题',
+                            '培养沟通和解决问题的能力',
+                            '给伴侣一些稳定感和安全感'
+                        ]
+                    }
+                }
+            }
+        };
+
+        // 全局变量
+        let currentTest = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+
+        // 微信菜单控制
+        function showWechatMenu() {
+            document.getElementById('wechat-menu').classList.remove('-translate-y-full');
+        }
+
+        function hideWechatMenu() {
+            document.getElementById('wechat-menu').classList.add('-translate-y-full');
+        }
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 30) {
+                navbar.classList.add('bg-white/95', 'backdrop-blur-sm');
+                navbar.classList.remove('bg-white');
+            } else {
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-sm');
+                navbar.classList.add('bg-white');
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 开始测试
+        function startTest(testType) {
+            currentTest = tests[testType];
+            currentQuestionIndex = 0;
+            userAnswers = {};
+
+            // 显示测试页面，隐藏其他页面
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('tests').classList.add('hidden');
+            document.getElementById('about').classList.add('hidden');
+            document.getElementById('contact').classList.add('hidden');
+            document.getElementById('test-page').classList.remove('hidden');
+            document.getElementById('result-page').classList.add('hidden');
+
+            // 设置测试标题和描述
+            document.getElementById('test-title').textContent = currentTest.title;
+            document.getElementById('test-description').textContent = currentTest.description;
+
+            // 显示第一个问题
+            showQuestion();
+
+            // 滚动到测试页面
+            window.scrollTo({
+                top: document.getElementById('test-page').offsetTop - 60,
+                behavior: 'smooth'
+            });
+        }
+
+        // 显示当前问题
+        function showQuestion() {
+            const question = currentTest.questions[currentQuestionIndex];
+            const container = document.getElementById('question-container');
+            
+            // 更新进度信息
+            document.getElementById('progress-text').textContent = `第 ${currentQuestionIndex + 1} 题 / 共 ${currentTest.questions.length} 题`;
+            document.getElementById('progress-bar').style.width = `${((currentQuestionIndex + 1) / currentTest.questions.length) * 100}%`;
+            
+            // 计算剩余时间
+            const remainingTime = Math.round((currentTest.questions.length - currentQuestionIndex - 1) * 0.33);
+            document.getElementById('time-estimate').textContent = `预计剩余时间: ${remainingTime}分钟`;
+            
+            // 生成问题HTML
+            let html = `
+                <div class="question-card">
+                    <h3 class="text-lg font-semibold mb-3">${question.question}</h3>
+                    <div class="options">
+            `;
+            
+            // 添加选项
+            question.options.forEach((option, index) => {
+                const isSelected = userAnswers[currentQuestionIndex] === index;
+                html += `
+                    <div class="option-btn ${isSelected ? 'selected' : ''}" onclick="selectOption(${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            // 更新导航按钮
+            updateNavigationButtons();
+        }
+
+        // 选择选项
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // 更新选项样式
+            const options = document.querySelectorAll('.option-btn');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // 更新导航按钮状态
+            updateNavigationButtons();
+        }
+
+        // 更新导航按钮
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // 上一题按钮
+            if (currentQuestionIndex === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            // 下一题/提交按钮
+            if (currentQuestionIndex === currentTest.questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+            
+            // 禁用按钮如果没有选择答案
+            const hasAnswer = userAnswers[currentQuestionIndex] !== undefined;
+            nextBtn.disabled = !hasAnswer;
+            submitBtn.disabled = !hasAnswer;
+            
+            if (nextBtn.disabled) {
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            if (submitBtn.disabled) {
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // 上一题
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (currentQuestionIndex < currentTest.questions.length - 1 && userAnswers[currentQuestionIndex] !== undefined) {
+                currentQuestionIndex++;
+                showQuestion();
+            }
+        }
+
+        // 提交测试
+        function submitTest() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            // 计算结果
+            const result = calculateResult();
+            
+            // 显示结果页面
+            showResult(result);
+        }
+
+        // 计算测试结果
+        function calculateResult() {
+            // 这里简化处理，实际应根据测试类型进行复杂计算
+            // 随机选择一个结果用于演示
+            const resultKeys = Object.keys(currentTest.results);
+            const randomResult = resultKeys[Math.floor(Math.random() * resultKeys.length)];
+            return currentTest.results[randomResult];
+        }
+
+        // 显示结果
+        function showResult(result) {
+            // 隐藏测试页面，显示结果页面
+            document.getElementById('test-page').classList.add('hidden');
+            document.getElementById('result-page').classList.remove('hidden');
+            
+            // 设置结果信息
+            document.getElementById('result-test-name').textContent = currentTest.title;
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-subtitle').textContent = result.subtitle;
+            
+            // 设置结果图标
+            const resultIcon = document.getElementById('result-icon');
+            resultIcon.innerHTML = `<i class="${result.icon} text-primary text-2xl"></i>`;
+            
+            // 设置性格特点
+            const traitsContainer = document.getElementById('personality-traits');
+            traitsContainer.innerHTML = '';
+            result.traits.forEach(trait => {
+                traitsContainer.innerHTML += `
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>${trait}</span>
+                    </li>
+                `;
+            });
+            
+            // 设置适合职业
+            const jobsContainer = document.getElementById('suitable-jobs');
+            jobsContainer.innerHTML = '';
+            result.jobs.forEach(job => {
+                jobsContainer.innerHTML += `
+                    <li class="flex items-start">
+                        <i class="fas fa-briefcase text-primary mt-1 mr-2"></i>
+                        <span>${job}</span>
+                    </li>
+                `;
+            });
+            
+            // 设置人际关系建议
+            const adviceContainer = document.getElementById('relationship-advice');
+            adviceContainer.innerHTML = '';
+            result.advice.forEach(advice => {
+                adviceContainer.innerHTML += `
+                    <li class="flex items-start">
+                        <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-2"></i>
+                        <span>${advice}</span>
+                    </li>
+                `;
+            });
+            
+            // 滚动到结果页面
+            window.scrollTo({
+                top: document.getElementById('result-page').offsetTop - 60,
+                behavior: 'smooth'
+            });
+        }
+
+        // 微信分享功能
+        function shareToWechatFriend() {
+            if (typeof WeixinJSBridge !== 'undefined') {
+                // 微信内置浏览器
+                try {
+                    WeixinJSBridge.invoke('sendAppMessage', {
+                        title: '心灵测试屋 - 我的测试结果',
+                        desc: `我在心灵测试屋完成了${currentTest.title}，结果是${document.getElementById('result-title').textContent}。快来试试吧！`,
+                        link: window.location.href,
+                        imgUrl: 'https://picsum.photos/id/64/200/200'
+                    });
+                } catch (e) {
+                    alert('分享失败，请稍后再试');
+                }
+            } else {
+                // 复制链接
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('链接已复制到剪贴板，请粘贴给微信好友');
+                }).catch(() => {
+                    alert('复制失败，请手动复制链接');
+                });
+            }
+        }
+
+        function shareToWechatMoment() {
+            if (typeof WeixinJSBridge !== 'undefined') {
+                // 微信内置浏览器
+                try {
+                    WeixinJSBridge.invoke('shareTimeline', {
+                        title: `我在心灵测试屋完成了${currentTest.title}，结果是${document.getElementById('result-title').textContent}。快来试试吧！`,
+                        link: window.location.href,
+                        imgUrl: 'https://picsum.photos/id/64/200/200'
+                    });
+                } catch (e) {
+                    alert('分享失败，请稍后再试');
+                }
+            } else {
+                alert('请在微信中打开以分享到朋友圈');
+            }
+        }
+
+        // 返回测试列表
+        function backToTests() {
+            document.getElementById('result-page').classList.add('hidden');
+            document.getElementById('test-page').classList.add('hidden');
+            document.getElementById('home').classList.remove('hidden');
+            document.getElementById('tests').classList.remove('hidden');
+            document.getElementById('about').classList.remove('hidden');
+            document.getElementById('contact').classList.remove('hidden');
+            
+            // 滚动到测试分类
+            window.scrollTo({
+                top: document.getElementById('tests').offsetTop - 60,
+                behavior: 'smooth'
+            });
+        }
+
+        // 重新测试
+        function retakeTest() {
+            startTest(Object.keys(tests).find(key => tests[key] === currentTest));
+        }
+
+        // 表单提交处理
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('感谢您的留言，我们会尽快回复您！');
+            this.reset();
+        });
+
+        // 微信JS-SDK初始化（示例，实际使用需要后端签名）
+        function initWechatSDK() {
+            if (typeof wx !== 'undefined') {
+                wx.config({
+                    debug: false,
+                    appId: '', // 必填，公众号的唯一标识
+                    timestamp: '', // 必填，生成签名的时间戳
+                    nonceStr: '', // 必填，生成签名的随机串
+                    signature: '',// 必填，签名
+                    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+                });
+
+                wx.ready(function() {
+                    // 分享到朋友圈
+                    wx.onMenuShareTimeline({
+                        title: '心灵测试屋 - 专业心理测试平台',
+                        link: window.location.href,
+                        imgUrl: 'https://picsum.photos/id/64/200/200',
+                        success: function () {
+                            // 用户确认分享后执行的回调函数
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+
+                    // 分享给朋友
+                    wx.onMenuShareAppMessage({
+                        title: '心灵测试屋 - 专业心理测试平台',
+                        desc: '探索真实的自己，专业心理测试平台',
+                        link: window.location.href,
+                        imgUrl: 'https://picsum.photos/id/64/200/200',
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: function () {
+                            // 用户确认分享后执行的回调函数
+                        },
+                        cancel: function () {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                });
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            // 检查是否在微信中打开
+            const isWechat = /MicroMessenger/i.test(navigator.userAgent);
+            if (isWechat) {
+                // 隐藏微信提示
+                document.querySelector('.fixed.bottom-0').classList.add('hidden');
+                // 初始化微信SDK
+                initWechatSDK();
+            }
+        });
+    </script>
+</body>
+</html>
